@@ -1,73 +1,120 @@
-# credit-risk-scorecard-profit-optimization
-PD scorecard, ML challenger and profit-optimal approval strategy for credit cards.
 
-# Problem Definition
+# Credit Risk Scorecard & Profit-Optimal Approval Strategy
+
+PD scorecard, machine learning challenger models, and profit-optimal credit decision strategy.
 
 ## 1. Business Problem
 
-Credit card lenders face a trade-off between losses caused by customer defaults and the revenue lost when credit is unnecessarily restricted. This project investigates how historical customer repayment behavior can be used to estimate next-month default risk and develop a risk-based credit decision strategy.
+Credit card lenders face a trade-off between losses caused by customer defaults and revenue lost when credit is unnecessarily restricted.
 
-The primary business question is: **Which decision threshold maximizes expected profit under explicitly defined assumptions about revenue, default losses and operating costs?**
+This project investigates how historical repayment behaviour can be used to estimate next-month default risk and develop a risk-based credit decision strategy.
+
+**Primary business question:** Which decision threshold maximizes expected profit under explicitly defined assumptions about revenue, default losses, and operating costs?
 
 ## 2. Project Objectives
 
 The project aims to:
 
 1. Estimate the probability of next-month default for existing credit card customers.
-2. Develop an interpretable points-based credit risk scorecard.
+2. Develop an interpretable, points-based credit risk scorecard.
 3. Compare the scorecard with machine learning challenger models.
-4. Evaluate ranking performance, calibration and stability.
+4. Evaluate ranking performance, calibration, and stability.
 5. Identify a profit-optimal decision threshold under illustrative economic assumptions.
 
 ## 3. Dataset and Population
 
-The project uses the UCI Default of Credit Card Clients dataset, containing 30,000 customer records from Taiwan. Each observation represents an existing credit card customer with historical billing, payment and repayment-status information.
+The project uses the UCI Default of Credit Card Clients dataset, containing approximately 30,000 customer records from Taiwan in 2005.
 
-The data covers April through September 2005, with the target outcome recorded for October 2005.
+Each observation represents an existing credit card customer with historical billing, payment, repayment-status, and demographic information.
+
+The observation period covers April–September 2005, with the target outcome recorded for October 2005. Exact variable-to-month mappings will be verified against the original dataset documentation.
+
+**Dataset source:** UCI Default of Credit Card Clients. Add the official dataset URL when finalising the repository.
+
+Expected project file location: `data/credit_card_default.csv`.
 
 ## 4. Target Definition
 
-The binary target is `DEFAULT`.
+The binary target is `DEFAULT` in the cleaned dataset. The original UCI column is commonly named `default.payment.next.month`.
 
-- **DEFAULT = 1**: default recorded in the target month.
-- **DEFAULT = 0**: no default recorded in the target month.
+- `DEFAULT = 1`: Default recorded in the target month.
+- `DEFAULT = 0`: No default recorded in the target month.
 
-The default rate will be calculated from the dataset and reported as part of the exploratory data analysis. The target represents a one-month outcome and should not be interpreted as a 12-month probability of default.
+The actual default rate will be calculated and reported during exploratory data analysis.
+
+The target represents a one-month outcome and must not be interpreted as a 12-month probability of default.
 
 ## 5. Observation and Performance Windows
 
-The observation window is April–September 2005. Model features will be derived from information available within this period.
-The conceptual decision point is the end of September 2005. The performance window is October 2005, during which the target outcome is observed.
-No information from the performance window or subsequent events will be used as predictive input features.
+- **Observation window:** April–September 2005.
+- **Conceptual decision point:** End of September 2005.
+- **Performance window:** October 2005.
 
-## 6. Modeling and Evaluation
+Predictive features must use only information available at the conceptual decision point. Information from the performance window or subsequent events must not be used as input features.
 
-The project will develop a logistic regression-based scorecard and compare its performance with machine learning challenger models.
-Evaluation will consider Gini, KS, probability calibration and distribution stability. Business evaluation will compare expected profit across decision thresholds and against clearly defined baseline strategies.
-All evaluation criteria will be documented before final model selection. Proposed metric ranges are guidelines rather than guaranteed outcomes.
+## 6. Modelling and Evaluation
+
+The planned modelling workflow is:
+
+1. Problem definition and data audit.
+2. Exploratory data analysis (EDA) and feature engineering.
+3. Weight of Evidence (WoE) / Information Value (IV) logistic regression scorecard.
+4. XGBoost or LightGBM challenger model with SHAP-based interpretation.
+5. Model validation using Gini, KS, calibration, and Population Stability Index (PSI).
+6. Profit-optimal threshold selection and sensitivity analysis.
+
+The project will evaluate predictive performance separately from business value. Threshold selection will use clearly defined economic assumptions and will be evaluated on data not used to tune the threshold.
+
+Proposed metric ranges are evaluation guidelines, not guaranteed results.
 
 ## 7. Fairness and Responsible Lending
 
-SEX, AGE and MARRIAGE are sensitive attributes. In many jurisdictions, lenders may not use gender or marital status in credit decisions, and age is restricted in some. This project will exclude SEX and MARRIAGE from the final model, and will test whether including AGE materially changes performance. EDA may still examine these variables to check for disparities
+Variables such as `SEX`, `AGE`, and `MARRIAGE` require careful consideration in credit-risk modelling.
+
+The planned approach is to exclude `SEX` and `MARRIAGE` from the final model and investigate whether including `AGE` materially changes performance. Their use in a real lending system would require jurisdiction-specific legal and policy review.
+
+Exploratory analysis may examine these variables to investigate potential disparities. Removing demographic variables does not automatically eliminate bias because other variables may act as proxies.
 
 ## 8. Assumptions and Limitations
 
-Assumptions
+### Assumptions
 
-1. Revenue and loss figures in the economic analysis are illustrative, because the dataset contains no real profit data.
-2. PAY = -2 is treated as “no consumption / no bill.”
-3. Currency amounts are in NT dollars and are used as given.
+1. Revenue and loss figures used in the economic analysis are illustrative because the dataset does not contain actual profit data.
+2. The treatment of repayment-status value `-2` will be verified against the dataset documentation before assigning a business interpretation.
+3. Currency amounts will be used as recorded in the source dataset, with units documented and verified.
 
-Limitations
+### Limitations
 
-1. Data is from one issuer in Taiwan in 2005, so patterns may not transfer to other markets or periods.
-2. There are no timestamps beyond the six-month window, so a true out-of-time validation is not possible. Validation uses a stratified random split.
-3. One-month default window, which is shorter than industry practice.
-4. Reject inference is not addressed: a real lender only observes outcomes for customers it approved, so a model trained on approved customers can be biased when applied to the full applicant pool.
-5. Scorecard is behavioral, not an application scorecard. 
+1. The data represents a particular credit-card population in Taiwan in 2005 and may not generalise to current customers or other markets.
+2. The dataset has a single target period, limiting genuine out-of-time validation. A stratified random split can assess performance within the historical sample but does not establish future temporal stability.
+3. The target covers one month rather than a longer default horizon.
+4. Reject inference is not addressed. Outcomes for rejected applicants are unavailable, so results for existing cardholders may not generalise to the entire applicant population.
+5. This is a behavioural scorecard for existing customers, not an application scorecard for new applicants.
+6. The simplified approve/decline framework in the economic analysis is a proxy for credit-exposure decisions, not a validated real-world lending policy.
+7. Predictive relationships do not establish causation, and model performance alone does not establish fairness or regulatory compliance.
 
-This project develops a behavioral scorecard for existing customers. The simplified approve/decline framework used in the economic analysis is a proxy for credit exposure decisions, not a validated application approval policy.
+## 9. How to Run
 
-## 9. Project Status
+Create the project environment using Conda:
 
-Problem definition and data documentation in progress.
+```bash
+conda create -n credit-risk python=3.11
+conda activate credit-risk
+pip install -r requirements.txt
+```
+
+Open JupyterLab or Jupyter Notebook and run the notebooks in the documented project workflow.
+
+Ensure that the dataset is stored in the expected location before running the analysis.
+
+## 10. Headline Results
+
+To be completed after model development and validation.
+
+This section will report the selected model, validation results, calibration findings, and profit-optimal decision threshold under the stated economic assumptions.
+
+## 11. Project Status
+
+**Current stage:** Problem definition, data documentation, and exploratory data analysis.
+
+Progress and results will be updated as the project develops.
