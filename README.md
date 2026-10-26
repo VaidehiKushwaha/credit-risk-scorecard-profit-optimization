@@ -29,8 +29,8 @@ The data covers April through September 2005, with the target outcome recorded f
 
 The binary target is `DEFAULT`.
 
-- `DEFAULT = 1`: default recorded in the target month.
-- `DEFAULT = 0`: no default recorded in the target month.
+- **DEFAULT = 1**: default recorded in the target month.
+- **DEFAULT = 0**: no default recorded in the target month.
 
 The default rate will be calculated from the dataset and reported as part of the exploratory data analysis. The target represents a one-month outcome and should not be interpreted as a 12-month probability of default.
 
