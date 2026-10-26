@@ -52,11 +52,23 @@ All evaluation criteria will be documented before final model selection. Propose
 
 ## 7. Fairness and Responsible Lending
 
-The use of sensitive attributes will be considered explicitly. The planned final model will exclude `SEX` and `MARRIAGE`, and the effect of `AGE` on model performance will be investigated. These choices do not, by themselves, establish fairness or legal compliance.
+SEX, AGE and MARRIAGE are sensitive attributes. In many jurisdictions, lenders may not use gender or marital status in credit decisions, and age is restricted in some. This project will exclude SEX and MARRIAGE from the final model, and will test whether including AGE materially changes performance. EDA may still examine these variables to check for disparities
 
 ## 8. Assumptions and Limitations
 
-Economic inputs used to estimate profit are illustrative because actual customer-level revenue and loss data are unavailable. The dataset reflects a single issuer, geography and historical period. Its one-month target, lack of a genuine out-of-time validation sample, and absence of rejected-applicant outcomes limit real-world generalization.
+Assumptions
+
+Revenue and loss figures in the economic analysis are illustrative, because the dataset contains no real profit data.
+PAY = -2 is treated as “no consumption / no bill.”
+Currency amounts are in NT dollars and are used as given.
+
+Limitations
+
+Data is from one issuer in Taiwan in 2005, so patterns may not transfer to other markets or periods.
+There are no timestamps beyond the six-month window, so a true out-of-time validation is not possible. Validation uses a stratified random split. (If you extend to Lending Club later, you can add a true out-of-time test.)
+One-month default window, which is shorter than industry practice.
+Reject inference is not addressed: a real lender only observes outcomes for customers it approved, so a model trained on approved customers can be biased when applied to the full applicant pool.
+Scorecard is behavioral, not an application scorecard. 
 
 This project develops a behavioral scorecard for existing customers. The simplified approve/decline framework used in the economic analysis is a proxy for credit exposure decisions, not a validated application approval policy.
 
