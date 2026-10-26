@@ -4,7 +4,7 @@
 This document describes the variables in the UCI Default of Credit Card Clients dataset used in the Credit Risk Scorecard & Profit-Optimal Approval Strategy project.
 
 | Column | Description | Type | Available at decision time? |
-|---|---|---|---|---|
+|---|---|---|---|
 | `LIMIT_BAL` | Credit limit | Numeric | Yes | |
 | `SEX` | Gender (1 = male, 2 = female) | Categorical | Yes |
 | `EDUCATION` | 1 = graduate school, 2 = university, 3 = high school, 4 = other | Categorical | Yes |
