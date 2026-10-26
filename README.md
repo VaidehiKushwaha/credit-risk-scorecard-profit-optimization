@@ -37,17 +37,13 @@ The default rate will be calculated from the dataset and reported as part of the
 ## 5. Observation and Performance Windows
 
 The observation window is April–September 2005. Model features will be derived from information available within this period.
-
 The conceptual decision point is the end of September 2005. The performance window is October 2005, during which the target outcome is observed.
-
 No information from the performance window or subsequent events will be used as predictive input features.
 
 ## 6. Modeling and Evaluation
 
 The project will develop a logistic regression-based scorecard and compare its performance with machine learning challenger models.
-
 Evaluation will consider Gini, KS, probability calibration and distribution stability. Business evaluation will compare expected profit across decision thresholds and against clearly defined baseline strategies.
-
 All evaluation criteria will be documented before final model selection. Proposed metric ranges are guidelines rather than guaranteed outcomes.
 
 ## 7. Fairness and Responsible Lending
@@ -58,17 +54,17 @@ SEX, AGE and MARRIAGE are sensitive attributes. In many jurisdictions, lenders m
 
 Assumptions
 
-Revenue and loss figures in the economic analysis are illustrative, because the dataset contains no real profit data.
-PAY = -2 is treated as “no consumption / no bill.”
-Currency amounts are in NT dollars and are used as given.
+1. Revenue and loss figures in the economic analysis are illustrative, because the dataset contains no real profit data.
+2. PAY = -2 is treated as “no consumption / no bill.”
+3. Currency amounts are in NT dollars and are used as given.
 
 Limitations
 
-Data is from one issuer in Taiwan in 2005, so patterns may not transfer to other markets or periods.
-There are no timestamps beyond the six-month window, so a true out-of-time validation is not possible. Validation uses a stratified random split. (If you extend to Lending Club later, you can add a true out-of-time test.)
-One-month default window, which is shorter than industry practice.
-Reject inference is not addressed: a real lender only observes outcomes for customers it approved, so a model trained on approved customers can be biased when applied to the full applicant pool.
-Scorecard is behavioral, not an application scorecard. 
+1. Data is from one issuer in Taiwan in 2005, so patterns may not transfer to other markets or periods.
+2. There are no timestamps beyond the six-month window, so a true out-of-time validation is not possible. Validation uses a stratified random split.
+3. One-month default window, which is shorter than industry practice.
+4. Reject inference is not addressed: a real lender only observes outcomes for customers it approved, so a model trained on approved customers can be biased when applied to the full applicant pool.
+5. Scorecard is behavioral, not an application scorecard. 
 
 This project develops a behavioral scorecard for existing customers. The simplified approve/decline framework used in the economic analysis is a proxy for credit exposure decisions, not a validated application approval policy.
 
