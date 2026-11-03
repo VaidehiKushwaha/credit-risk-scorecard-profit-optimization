@@ -248,6 +248,7 @@ pyls-spyder==0.4.0
 PyNaCl @ file:///C:/Users/task_177793608033386/croot/pynacl_1777936484920/work
 pyodbc @ file:///C:/Users/dev-admin/buildout/croot/pyodbc_1761998356619/work
 pyparsing @ file:///C:/miniconda3/conda-bld/pyparsing_1763973805642/work
+pyperclip==1.11.0
 pyproject_hooks @ file:///C:/miniconda3/conda-bld/pyproject_hooks_1761732876631/work
 PyQt6==6.11.0
 PyQt6-WebEngine==6.11.0
