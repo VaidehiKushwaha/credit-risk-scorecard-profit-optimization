@@ -143,3 +143,11 @@ Created 49 candidate behavioural and profile features across five families:
 - **Profile and combined features:** Age, education, account inactivity and a repayment-utilization interaction.
 
 All features are generated using a reusable Python function applied consistently to training and testing data. The design avoids target leakage, uses fixed business rules for capping, and preserves undefined ratios as missing values.
+
+## Evaluation Protocol
+
+Model development and comparison use 5-fold stratified cross-validation on the training set. Preprocessing steps that learn from data, including imputation and scaling, are fitted within each fold to prevent information leakage.
+
+The 30% test set is locked at Step 5, with file checksums recorded, and reserved for final evaluation in Step 8. Model performance is assessed using AUC, Gini, KS, Brier score, PSI, decile analysis and expected profit.
+
+The dataset does not provide suitable dates for out-of-time validation. This limitation is documented.
