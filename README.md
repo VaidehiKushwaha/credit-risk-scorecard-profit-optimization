@@ -118,3 +118,28 @@ This section will report the selected model, validation results, calibration fin
 **Current stage:** Problem definition, data documentation, and exploratory data analysis.
 
 Progress and results will be updated as the project develops.
+
+### Key EDA Findings
+
+- **Repayment status is the strongest signal:** PAY_0 has the highest univariate AUC (0.692), with higher delay codes associated with higher default rates.
+- **Credit limit matters:** Default rates generally decline across higher credit-limit bands, from 36.9% in the lowest band to 11.6% in the highest.
+- **Payment behaviour differs:** Non-defaulters made higher average payments than defaulters across all six months.
+- **Bill amounts have weak standalone signals:** Their Spearman correlations with default are close to zero.
+- **Historical deterioration matters:** Average repayment status worsened over time among customers who eventually defaulted.
+- **Interactions may matter:** Repayment status and credit limit show potentially useful combined patterns.
+- **Data quality decisions:** Duplicate profiles, negative bills and extreme values were investigated rather than automatically deleted.
+- **Responsible modelling:** SEX and MARRIAGE are excluded from the final model; fairness still requires separate evaluation.
+
+**Modelling implications:** Prioritise repayment history, investigate behavioural features and interactions, and compare an interpretable scorecard with machine-learning challengers.
+
+## Feature Engineering
+
+Created 49 candidate behavioural and profile features across five families:
+
+- **Delinquency:** Payment delays, frequency, severity and repayment trends.
+- **Utilization:** Credit usage relative to available credit limits.
+- **Payment behaviour:** Payment ratios, zero-payment patterns and repayment coverage.
+- **Bill dynamics:** Bill trends, changes and volatility.
+- **Profile and combined features:** Age, education, account inactivity and a repayment-utilization interaction.
+
+All features are generated using a reusable Python function applied consistently to training and testing data. The design avoids target leakage, uses fixed business rules for capping, and preserves undefined ratios as missing values.
