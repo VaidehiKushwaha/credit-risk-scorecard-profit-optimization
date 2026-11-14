@@ -151,3 +151,50 @@ Model development and comparison use 5-fold stratified cross-validation on the t
 The 30% test set is locked at Step 5, with file checksums recorded, and reserved for final evaluation in Step 8. Model performance is assessed using AUC, Gini, KS, Brier score, PSI, decile analysis and expected profit.
 
 The dataset does not provide suitable dates for out-of-time validation. This limitation is documented.
+
+## Step 6: Credit Risk Scorecard Development
+
+Developed an interpretable credit-risk scorecard using Weight of Evidence (WOE) transformation and logistic regression.
+
+### Variable selection
+- Applied optimal binning and Information Value (IV) analysis.
+- Removed low-information variables.
+- Reduced redundancy using WOE correlation analysis.
+- Checked multicollinearity using Variance Inflation Factor (VIF).
+- Used backward elimination and L1 regularisation to compare variable selection.
+- Retained nine predictors in the final scorecard:
+  - Average repayment delay
+  - Repayment delay trend
+  - Number of revolving months
+  - Log credit limit
+  - Average payment amount
+  - Average bill-to-limit ratio
+  - Utilisation trend
+  - Latest utilisation
+  - Number of bill increases
+
+### Model evaluation
+Five-fold stratified cross-validation produced:
+
+| Metric | Result |
+|---|---:|
+| AUC | 0.772 |
+| Gini | 0.544 |
+| KS | 0.425 |
+| Brier Score | 0.139 |
+
+The highest-risk decile had an actual default rate of 64.71%, compared with 5.29% in the lowest-risk decile.
+
+### Scorecard construction
+- Converted logistic regression coefficients and WOE values into additive score points.
+- Used a base score of 600, base odds of 50:1 and PDO of 20.
+- Verified that credit scores reproduce the logistic model's predicted probabilities.
+- Verified that a 20-point increase halves the odds of default.
+
+### Saved model artifacts
+- `models/scorecard_model.joblib`
+- `models/scorecard_config.json`
+- `reports/scorecard_points.csv`
+- `reports/final_feature_iv.csv`
+
+The saved model was successfully reloaded and produced identical predictions to the original fitted model.

@@ -1,0 +1,22 @@
+{
+    "model_type": "WOE Logistic Regression Scorecard",
+    "target": "DEFAULT",
+    "features": [
+        "avg_delay",
+        "delay_trend",
+        "n_revolving",
+        "log_limit",
+        "pay_amt_avg",
+        "bill_avg_to_limit",
+        "util_trend",
+        "util_latest",
+        "n_bill_increases"
+    ],
+    "intercept": -1.2630530271317117,
+    "PDO": 20,
+    "base_score": 600,
+    "base_odds": 50,
+    "factor": 28.85390081777927,
+    "offset": 487.1228762045055,
+    "base_points_per_variable": 58.17409810855108
+}
