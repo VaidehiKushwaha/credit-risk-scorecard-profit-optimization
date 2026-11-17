@@ -198,3 +198,75 @@ The highest-risk decile had an actual default rate of 64.71%, compared with 5.29
 - `reports/final_feature_iv.csv`
 
 The saved model was successfully reloaded and produced identical predictions to the original fitted model.
+
+## Step 7: Machine Learning Challenger and Model Interpretation
+
+### 1. Model tuning approach
+
+Three LightGBM challenger models were developed and compared against the interpretable logistic regression scorecard:
+
+- **C1:** LightGBM using the nine features selected for the scorecard.
+- **C2:** LightGBM using all 48 engineered features, excluding age.
+- **C3:** LightGBM using all 48 engineered features with monotonic constraints based on the expected direction of risk.
+
+Hyperparameters were tuned using randomized search with 40 candidate configurations per model and five-fold stratified cross-validation. Early stopping was used to determine the number of boosting rounds. A one-standard-error selection approach was used to favour simpler configurations with competitive performance.
+
+### 2. Nested cross-validation
+
+Nested cross-validation was conducted for C3 using five outer folds and three inner folds. Hyperparameter tuning was performed within each outer training sample, and the selected model was evaluated on the corresponding untouched outer fold.
+
+| Measure | Result |
+|---|---:|
+| Mean outer-fold AUC | 0.7907 |
+| Mean outer-fold Gini | 0.5814 |
+| Standard deviation of outer-fold Gini | 0.0172 |
+
+The nested estimate provides an additional assessment of model generalisation while accounting for hyperparameter selection. The inner-loop selection used the best inner-fold AUC, rather than the one-standard-error selection rule used in the earlier tuning exercise.
+
+### 3. Model calibration
+
+Platt scaling and isotonic regression were assessed using fold-wise calibration.
+
+Neither method produced a meaningful improvement for C3. Its original predictions achieved an AUC of 0.7896 and Brier score of 0.1327, compared with 0.7895 and 0.1328 after Platt scaling, and 0.7873 and 0.1331 after isotonic regression.
+
+The original, uncalibrated C3 predictions were therefore retained. Calibration was treated as a separate assessment from ranking performance.
+
+### 4. Model performance comparison
+
+The following results are based on out-of-fold predictions on the training dataset.
+
+| Model | AUC | Gini | KS | Brier | Top 10% default capture |
+|---|---:|---:|---:|---:|---:|
+| Scorecard | 0.7720 | 0.5439 | 0.4248 | 0.1388 | 29.26% |
+| C1 LightGBM | 0.7839 | 0.5678 | 0.4369 | 0.1345 | 31.09% |
+| C2 LightGBM | 0.7888 | 0.5776 | 0.4367 | 0.1328 | 32.19% |
+| C3 Monotonic LightGBM | **0.7896** | **0.5792** | **0.4382** | **0.1327** | 31.95% |
+
+C3 achieved the strongest overall AUC, Gini, KS and Brier results. C2 captured a slightly larger share of defaults in the highest-risk 10% of customers. The performance difference between C2 and C3 was small, while the scorecard remained the more interpretable model.
+
+### 5. SHAP-based model interpretation
+
+SHAP (SHapley Additive exPlanations) was used to interpret the final C3 model. Global feature importance identified the following influential variables:
+
+1. Months since the most recent late payment
+2. Latest repayment status
+3. Maximum historical delay
+4. Average repayment delay
+5. Average bill amount
+6. Average payment amount
+7. Credit limit
+8. Minimum payment ratio
+9. Average utilisation over the latest three months
+10. Number of monthly bill increases
+
+The dependence plots indicated that recent and more severe repayment delays generally increased predicted default risk. Higher payment amounts and longer periods since the most recent late payment generally reduced predicted risk. Some billing and repayment variables showed more complex relationships.
+
+SHAP values describe model contributions, not causal effects. They are useful for model interpretation and potential reason-code development, but should not be treated as proof that a particular customer characteristic causes default.
+
+### 6. Step 7 conclusion
+
+The monotonic LightGBM challenger achieved the strongest overall out-of-fold predictive performance, with only a modest improvement over the unrestricted LightGBM challenger. The logistic regression scorecard offers a simpler and more transparent alternative.
+
+Both models were saved, and the saved C3 model was reloaded and verified against the original model, producing a maximum prediction difference of zero on the verification sample.
+
+The final comparison of credit approval strategies and their economic outcomes will be conducted in Step 8 using the previously untouched test dataset.
