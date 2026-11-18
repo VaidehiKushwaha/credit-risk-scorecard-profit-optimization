@@ -109,9 +109,10 @@ Ensure that the dataset is stored in the expected location before running the an
 
 ## 10. Headline Results
 
-To be completed after model development and validation.
+Headline result: On the locked test set, the scorecard achieved a Gini of 0.5176 (95% bootstrap CI: 0.4941–0.5434), while C3 Monotonic LightGBM achieved 0.5614 (0.5381–0.5847), a paired Gini improvement of 0.0438 (95% CI: 0.0343–0.0539).
 
-This section will report the selected model, validation results, calibration findings, and profit-optimal decision threshold under the stated economic assumptions.
+See the [Model Card](reports/model_card.md) for model details, validation results, limitations, fairness assessment and monitoring recommendations.
+
 
 ## 11. Project Status
 
