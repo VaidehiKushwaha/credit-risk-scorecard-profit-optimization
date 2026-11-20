@@ -271,3 +271,35 @@ The monotonic LightGBM challenger achieved the strongest overall out-of-fold pre
 Both models were saved, and the saved C3 model was reloaded and verified against the original model, producing a maximum prediction difference of zero on the verification sample.
 
 The final comparison of credit approval strategies and their economic outcomes will be conducted in Step 8 using the previously untouched test dataset.
+
+## Economic Results and Profit-Optimal Strategy
+
+Using illustrative assumptions of revenue R = NT$6,000, LGD = 70%, and EAD = NT$51,221, the break-even probability of default is **14.3%**. The corresponding scorecard cutoff is **538.71**.
+
+On the 9,000-customer test sample, the scorecard strategy achieved an approval rate of 54.7% and profit of **NT$876.34 per customer**, compared with a loss of **NT$3,259.23 per customer** when approving everyone.
+
+The paired bootstrap 95% confidence interval for the scorecard's profit advantage over approving everyone was **NT$3,856.50 to NT$4,437.10 per customer**. LightGBM generated an additional **NT$201.10 per customer** over the scorecard, with a paired 95% confidence interval of **NT$87.40 to NT$313.40**.
+
+At equal approval rates of 54.7%, LightGBM earned NT$1,048.41 per customer compared with NT$876.34 for the scorecard.
+
+These results support retaining the interpretable scorecard as the champion and using monotonic LightGBM as a monitored challenger or pilot. All profit estimates are illustrative and depend on the assumed revenue and loss parameters.
+
+### Strategy comparison on the test set
+
+| Strategy | Approval rate | Bad rate approved | Profit/customer (NT$) |
+|---|---:|---:|---:|
+| Approve everyone | 100.0% | 22.1% | -3,259.23 |
+| Decline everyone | 0.0% | — | 0.00 |
+| Accuracy cutoff | 88.2% | 17.0% | -995.53 |
+| Policy rule | 89.6% | 16.7% | -882.96 |
+| Scorecard at break-even | 54.7% | 10.5% | 876.34 |
+| LightGBM at break-even | 50.5% | 9.2% | 1,076.11 |
+
+### Profit versus cutoff
+
+![Profit versus cutoff](reports/figures/profit_vs_cutoff.png)
+
+### Sensitivity analysis
+
+The sensitivity analysis shows that revenue has the largest impact among the tested economic assumptions. Across the two-way revenue × LGD grid, the largest regret from retaining the original fixed cutoff was approximately NT$1,180.60 per customer (at revenue NT$3,000 and LGD 90%).
+
