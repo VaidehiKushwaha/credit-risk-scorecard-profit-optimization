@@ -3,6 +3,8 @@
 
 PD scorecard, machine learning challenger models, and profit-optimal credit decision strategy.
 
+**Key result:** Using an illustrative break-even PD of 14.3%, the WOE scorecard earned NT$876 per customer on the held-out test set, compared with a loss of NT$3,259 when approving everyone. The paired profit gain was NT$4,136 per customer (95% CI: NT$3,857–4,437). The monotonic LightGBM challenger delivered a paired-bootstrap mean uplift of NT$201 per customer (95% CI: NT$87–313). **Recommendation: retain the scorecard as champion and evaluate LightGBM through a controlled pilot.**
+
 ## 1. Business Problem
 
 Credit card lenders face a trade-off between losses caused by customer defaults and revenue lost when credit is unnecessarily restricted.
@@ -270,7 +272,7 @@ The monotonic LightGBM challenger achieved the strongest overall out-of-fold pre
 
 Both models were saved, and the saved C3 model was reloaded and verified against the original model, producing a maximum prediction difference of zero on the verification sample.
 
-The final comparison of credit approval strategies and their economic outcomes will be conducted in Step 8 using the previously untouched test dataset.
+The credit approval strategies were evaluated on the held-out test dataset in Step 8, followed by the economic and profit-optimization analysis in Step 9 and the final business recommendation in Step 10.
 
 ## Economic Results and Profit-Optimal Strategy
 
@@ -280,7 +282,7 @@ On the 9,000-customer test sample, the scorecard strategy achieved an approval r
 
 The paired bootstrap 95% confidence interval for the scorecard's profit advantage over approving everyone was **NT$3,856.50 to NT$4,437.10 per customer**. LightGBM generated an additional **NT$201.10 per customer** over the scorecard, with a paired 95% confidence interval of **NT$87.40 to NT$313.40**.
 
-At equal approval rates of 54.7%, LightGBM earned NT$1,048.41 per customer compared with NT$876.34 for the scorecard.
+At equal approval rates of approximately 54.7%, LightGBM earned NT$1,049.74 per customer compared with NT$877.67 for the scorecard, an uplift of NT$172.07 per customer..
 
 These results support retaining the interpretable scorecard as the champion and using monotonic LightGBM as a monitored challenger or pilot. All profit estimates are illustrative and depend on the assumed revenue and loss parameters.
 
